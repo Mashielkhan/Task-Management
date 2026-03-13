@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f0f0, #d5d5d5);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background 0.5s;
+        }
+        .dark-mode {
+            background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+            color: white;
+        }
+        .task {
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        .task:hover {
+            transform: scale(1.02);
+        }
+        /* More styles here... */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Enhanced Task Management Application</h1>
+        <button id="toggle-theme">Toggle Dark Mode</button>
+    </header>
+    <main>
+        <section id="task-list">
+            <!-- Dynamic Task List will render here -->
+        </section>
+        <footer>
+            <button id="export-tasks">Export Tasks</button>
+            <button id="import-tasks">Import Tasks</button>
+        </footer>
+    </main>
+    <script>
+        // JavaScript logic for task management goes here
+        const toggleThemeButton = document.getElementById('toggle-theme');
+        const body = document.body;
+        toggleThemeButton.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+        });
+        // More JS for features... 
+    </script>
+</body>
+</html>
