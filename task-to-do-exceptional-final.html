@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Task Management Application</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Task Management Application</h1>
+        <button id="toggle-theme">Toggle Dark Mode</button>
+    </header>
+    <main>
+        <section id="task-input">
+            <input type="text" id="task-title" placeholder="Task Title">
+            <input type="datetime-local" id="task-deadline">
+            <button id="add-task">Add Task</button>
+        </section>
+        <section id="task-list">
+            <h2>Tasks</h2>
+            <ul id="tasks">
+                <!-- Tasks will be dynamically added here -->
+            </ul>
+            <button id="bulk-delete">Delete Selected</button>
+            <button id="export-tasks">Export Tasks</button>
+            <input type="file" id="import-tasks"> 
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Task Management App</p>
+    </footer>
+</body>
+</html>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    transition: background-color 0.5s;
+}
+
+header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#task-list {
+    list-style-type: none;
+}
+
+.task { 
+    display: flex;
+    align-items: center;
+}
+
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+</style>
+
+<script>
+const toggleTheme = () => {
+    document.body.classList.toggle('dark-mode');
+};
+
+document.getElementById('toggle-theme').addEventListener('click', toggleTheme);
+
+const tasks = [];
+document.getElementById('add-task').addEventListener('click', () => {
+    const title = document.getElementById('task-title').value;
+    const deadline = document.getElementById('task-deadline').value;
+    if (title) {
+        tasks.push({ title, deadline });
+        updateTaskList();
+        document.getElementById('task-title').value = '';
+        document.getElementById('task-deadline').value = '';
+    }
+});
+
+const updateTaskList = () => {
+    const taskList = document.getElementById('tasks');
+    taskList.innerHTML = '';
+    tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.className = 'task';
+        li.innerHTML = `<input type='checkbox' id='task-${index}' /> ${task.title} (Deadline: ${task.deadline})`;
+        taskList.appendChild(li);
+    });
+};
+
+document.getElementById('bulk-delete').addEventListener('click', () => {
+    tasks = tasks.filter((_, index) => !document.getElementById('task-' + index).checked);
+    updateTaskList();
+});
+
+document.getElementById('export-tasks').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(tasks)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tasks.json';
+    a.click();
+    URL.revokeObjectURL(url);
+});
+
+document.getElementById('import-tasks').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const importedTasks = JSON.parse(e.target.result);
+        tasks.push(...importedTasks);
+        updateTaskList();
+    };
+    reader.readAsText(file);
+});
+</script>
