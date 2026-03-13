@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Enhanced</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px;
+        }
+        .task {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+        .task:hover {
+            transform: scale(1.02);
+        }
+        .time-urgent {
+            color: red;
+        }
+        .time-due-soon {
+            color: orange;
+        }
+        .time-upcoming {
+            color: green;
+        }
+        .badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            display: inline-block;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="task time-urgent">
+            <h3>Task 1 <span class="badge">Urgent</span></h3>
+            <p>Description for Task 1...</p>
+        </div>
+        <div class="task time-due-soon">
+            <h3>Task 2 <span class="badge">Due Soon</span></h3>
+            <p>Description for Task 2...</p>
+        </div>
+    </div>
+    <script>
+        function getTimePriority(deadline) {
+            const currentDate = new Date();
+            const dueDate = new Date(deadline);
+            const timeDiff = dueDate - currentDate;
+            const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            if (daysLeft < 0) return 'time-urgent';
+            if (daysLeft <= 3) return 'time-due-soon';
+            return 'time-upcoming';
+        }
+
+        function sortTasks(tasks) {
+            return tasks.sort((a, b) => {
+                const priorityA = getTimePriority(a.deadline);
+                const priorityB = getTimePriority(b.deadline);
+                return priorityA.localeCompare(priorityB);
+            });
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'd') {
+                document.body.classList.toggle('dark-mode');
+            }
+            if (event.ctrlKey && event.key === 'e') {
+                exportTasks();
+            }
+            if (event.ctrlKey && event.key === 'a') {
+                selectAllTasks();
+            }
+        });
+
+        function exportTasks() {
+            // Implement exporting tasks to JSON
+        }
+
+        function selectAllTasks() {
+            // Implement selection of all tasks
+        }
+    </script>
+</body>
+</html>
